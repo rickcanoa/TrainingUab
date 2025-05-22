@@ -1,4 +1,5 @@
 ﻿using AppTrainingBE.Models;
+using AppTrainingBETeacher.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppTrainingBE.Context
@@ -12,5 +13,12 @@ namespace AppTrainingBE.Context
         }
 
         public DbSet<Person> Persons { get; set; }
+
+        #region Relacion 1 a 1
+        public DbSet<User> Users { get; set; }
+        public DbSet<UserProfile> UserProfiles { get; set; }
+        #endregion
+
+
     }
 }
