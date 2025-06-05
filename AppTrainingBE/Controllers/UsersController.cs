@@ -13,7 +13,7 @@ namespace AppTrainingBE.Controllers
     {
         private readonly AppDbContext _context;
 
-        public UsersController(AppDbContext context) 
+        public UsersController(AppDbContext context)
         {
             _context = context;
         }
@@ -29,14 +29,14 @@ namespace AppTrainingBE.Controllers
             return Ok(users);
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetUser(int id)
         {
             var user = await _context.Users
                 .Include(u => u.Profile)
                 .FirstOrDefaultAsync(u => u.Id == id);
 
-            if(user == null)
+            if (user == null)
                 return NotFound();
 
             return Ok(user);
@@ -44,12 +44,13 @@ namespace AppTrainingBE.Controllers
 
         [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody] User user)
-        { 
+        {
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
         }
 
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser
             (int id, [FromBody] User updateUser)
         {
@@ -69,4 +70,5 @@ namespace AppTrainingBE.Controllers
 
             return NoContent();
         }
+    }
 }
