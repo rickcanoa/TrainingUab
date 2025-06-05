@@ -1,5 +1,4 @@
 ﻿using AppTrainingBE.Models;
-using AppTrainingBETeacher.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppTrainingBE.Context
@@ -19,6 +18,23 @@ namespace AppTrainingBE.Context
         public DbSet<UserProfile> UserProfiles { get; set; }
         #endregion
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            #region 1 a 1
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.Profile)
+                .WithOne(u => u.User)
+                .HasForeignKey<UserProfile>(p => p.UserId);
+
+            //Propiedades de opciones
+            modelBuilder.Entity<User>()
+                .Property(u => u.UserName)
+                .IsRequired()
+                .HasMaxLength(50);
+            #endregion
+        }
 
     }
 }
